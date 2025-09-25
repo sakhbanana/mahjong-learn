@@ -1,130 +1,26 @@
-/* style.css */
-:root {
-  --tile-size: 60px;
-  --tile-height: 84px;
+:root{
+  --bg:#f6fbf6;
+  --card:#ffffff;
+  --accent:#0b6d3a;
+  --muted:#666;
+  --maxw:980px;
 }
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f9f4e8;
-  margin: 0;
-  padding: 16px;
-  color: #2c1810;
-}
-
-header {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-nav {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-nav a {
-  margin: 0 12px;
-  text-decoration: none;
-  color: #8b4513;
-  font-weight: bold;
-  padding: 6px 12px;
-  border-radius: 6px;
-}
-
-nav a:hover {
-  background: #e8d9c5;
-}
-
-.section {
-  max-width: 900px;
-  margin: 0 auto 32px;
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-h1, h2, h3 {
-  color: #8b0000;
-}
-
-/* Тайл */
-.tile {
-  width: var(--tile-size);
-  height: var(--tile-height);
-  background: white;
-  border: 2px solid #d4b895;
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: bold;
-  margin: 4px;
-  cursor: grab;
-  user-select: none;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.tile:hover {
-  transform: translateY(-3px);
-  box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
-}
-
-.tile.dragging {
-  opacity: 0.7;
-  transform: scale(1.05);
-}
-
-.tile.valid {
-  border-color: #2e8b57;
-  box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.3);
-}
-
-.tile.pung, .tile.chow {
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(46, 139, 87, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(46, 139, 87, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(46, 139, 87, 0); }
-}
-
-.hand {
-  min-height: 120px;
-  background: #e8d9c5;
-  padding: 16px;
-  border-radius: 12px;
-  margin-top: 20px;
-  text-align: center;
-  border: 2px dashed #c9a88a;
-}
-
-.instructions {
-  font-style: italic;
-  color: #6b4c3a;
-  margin-top: 10px;
-}
-
-.success {
-  color: #2e8b57;
-  font-weight: bold;
-  font-size: 1.2em;
-  margin-top: 16px;
-  animation: fadeIn 1s;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-/* Поддержка SVG внутри тайлов */
-.tile svg {
-  display: block;
-}
+*{box-sizing:border-box}
+body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:#111; margin:0; padding:0}
+.container{max-width:var(--maxw); margin:24px auto; padding:0 16px}
+.site-header{background:var(--card); padding:18px; box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.site-header h1{margin:0; font-size:20px}
+.site-header nav{margin-top:8px}
+.site-header a{color:var(--accent); text-decoration:none}
+.hero{background:linear-gradient(90deg,#e8f7ea,#ffffff); padding:18px; border-radius:8px; margin:18px 0}
+.actions .btn{margin-right:10px}
+.btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;border:none;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid var(--accent); color:var(--accent)}
+.preview, .about, .lesson{background:var(--card); padding:14px; margin-top:12px; border-radius:8px}
+.tile-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(56px,1fr)); gap:10px; align-items:center}
+.tile{width:56px; height:80px; display:flex; align-items:center; justify-content:center; background:#fff; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,.06); cursor:pointer; padding:6px}
+.tile img{max-width:100%; max-height:100%}
+.hand-area{display:flex; gap:8px; flex-wrap:wrap; padding:10px 0}
+.hint{color:var(--muted); margin-left:8px}
+.note{font-size:13px; color:var(--muted)}
+.site-footer{max-width:var(--maxw); margin:18px auto; padding:8px 16px; color:var(--muted)}
