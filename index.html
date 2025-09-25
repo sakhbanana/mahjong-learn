@@ -1,13 +1,167 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Mahjong Learn – Корейский маджонг</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Учим корейский маджонг</title>
+  <style>
+    /* Базовые стили */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f0e6;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      color: #8b0000;
+    }
+
+    .section {
+      max-width: 800px;
+      margin: 0 auto 40px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Стили для тайлов */
+    .tile {
+      width: 50px;
+      height: 70px;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+      margin: 4px;
+      cursor: grab;
+      user-select: none;
+      box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .tile.dragging {
+      opacity: 0.6;
+      cursor: grabbing;
+    }
+
+    .hand {
+      min-height: 100px;
+      background: #e8d9c5;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .instructions {
+      font-style: italic;
+      color: #555;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Добро пожаловать в обучение корейскому маджонгу!</h1>
-  <p>Сайт в разработке. Скоро здесь появятся интерактивные уроки.</p>
-  <script src="main.js"></script>
+  <header>
+    <h1>Изучаем корейский маджонг 🀄</h1>
+    <p>Интерактивное пособие для новичков</p>
+  </header>
+
+  <main>
+    <section class="section">
+      <h2>Что такое корейский маджонг?</h2>
+      <p>
+        Корейский маджонг (иногда называемый «Korean Mahjong» или «Korean Riichi») — это разновидность классической игры в маджонг,
+        популярная в Южной Корее. В ней используются стандартные 144 тайла, но правила подсчёта очков и некоторые комбинации отличаются.
+      </p>
+      <p>В этом пособии ты научишься распознавать тайлы и собирать выигрышные комбинации!</p>
+    </section>
+
+    <section class="section">
+      <h2>Практика: собери свою руку</h2>
+      <p>Перетащи тайлы из колоды внизу в свою руку. Попробуй собрать сет (3 одинаковых) или ряд (3 последовательных числа одной масти).</p>
+
+      <div class="hand" id="player-hand">
+        <!-- Сюда будут перетаскиваться тайлы -->
+        <div class="instructions">Твоя рука (перетащи сюда тайлы)</div>
+      </div>
+
+      <h3>Колоды тайлов</h3>
+      <div id="tiles-bank">
+        <!-- Тайлы будут генерироваться скриптом -->
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Простой набор тайлов для демонстрации (корейский маджонг использует те же базовые тайлы)
+    const tileSymbols = [
+      '🀇', '🀈', '🀉', '🀊', '🀋', '🀌', '🀍', '🀎', '🀏', // Кружки (dots)
+      '🀙', '🀚', '🀛', '🀜', '🀝', '🀞', '🀟', '🀠', '🀡', // Бамбуки (bamboo)
+      '🀐', '🀑', '🀒', '🀓', '🀔', '🀕', '🀖', '🀗', '🀘', // Характеры (characters)
+      '🀀', '🀁', '🀂', '🀃',                         // Ветра
+      '🀆', '🀅'                                     // Драконы
+    ];
+
+    const tilesBank = document.getElementById('tiles-bank');
+    const playerHand = document.getElementById('player-hand');
+
+    // Генерируем 20 случайных тайлов
+    for (let i = 0; i < 20; i++) {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.textContent = tileSymbols[Math.floor(Math.random() * tileSymbols.length)];
+      tile.draggable = true;
+
+      tile.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', tile.textContent);
+        tile.classList.add('dragging');
+      });
+
+      tile.addEventListener('dragend', () => {
+        tile.classList.remove('dragging');
+      });
+
+      tilesBank.appendChild(tile);
+    }
+
+    // Настройка зоны для перетаскивания
+    playerHand.addEventListener('dragover', (e) => {
+      e.preventDefault(); // Разрешаем drop
+    });
+
+    playerHand.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const tileChar = e.dataTransfer.getData('text/plain');
+      
+      // Создаём новый тайл в руке
+      const newTile = document.createElement('div');
+      newTile.className = 'tile';
+      newTile.textContent = tileChar;
+      newTile.draggable = true;
+
+      // Можно добавить возможность убирать из руки (опционально)
+      newTile.addEventListener('click', () => {
+        newTile.remove();
+      });
+
+      // Убираем подсказку, если это первый тайл
+      if (playerHand.querySelector('.instructions')) {
+        playerHand.querySelector('.instructions').remove();
+      }
+
+      playerHand.appendChild(newTile);
+    });
+  </script>
 </body>
 </html>
