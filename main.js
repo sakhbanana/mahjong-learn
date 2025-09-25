@@ -91,3 +91,30 @@ function findChows(tiles) {
 window.checkHand = checkHand;
 window.tileNames = tileNames;
 window.playSound = playSound;
+// === ГЕНЕРАЦИЯ ЦВЕТНЫХ SVG-ТАЙЛОВ ===
+function createTileSVG(char) {
+  // Цвета по мастям
+  const colors = {
+    man: '#c00000', // красный
+    pin: '#0066cc', // синий
+    sou: '#008000', // зелёный
+    wind: '#8b4513', // коричневый
+    dragon: '#ff6600' // оранжевый
+  };
+
+  let suit = 'other';
+  if ('🀐🀑🀒🀓🀔🀕🀖🀗🀘'.includes(char)) suit = 'man';
+  else if ('🀇🀈🀉🀊🀋🀌🀍🀎🀏'.includes(char)) suit = 'pin';
+  else if ('🀙🀚🀛🀜🀝🀞🀟🀠🀡'.includes(char)) suit = 'sou';
+  else if ('🀀🀁🀂🀃'.includes(char)) suit = 'wind';
+  else if ('🀅🀆🀄'.includes(char)) suit = 'dragon';
+
+  const color = colors[suit] || '#000';
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 140" width="100%" height="100%">
+      <rect width="100" height="140" rx="10" fill="white" stroke="#aaa" stroke-width="3"/>
+      <text x="50" y="95" font-size="60" text-anchor="middle" fill="${color}" font-family="sans-serif">${char}</text>
+    </svg>
+  `;
+}
