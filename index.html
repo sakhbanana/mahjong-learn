@@ -1,165 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Учим корейский маджонг</title>
-  <style>
-    :root {
-      --tile-size: 60px;
-      --tile-height: 84px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f9f4e8;
-      margin: 0;
-      padding: 16px;
-      color: #2c1810;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    nav {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    nav a {
-      margin: 0 12px;
-      text-decoration: none;
-      color: #8b4513;
-      font-weight: bold;
-      padding: 6px 12px;
-      border-radius: 6px;
-    }
-
-    nav a:hover {
-      background: #e8d9c5;
-    }
-
-    .section {
-      max-width: 900px;
-      margin: 0 auto 32px;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    h1, h2, h3 {
-      color: #8b0000;
-    }
-
-    .tile {
-      width: var(--tile-size);
-      height: var(--tile-height);
-      background: white;
-      border: 2px solid #d4b895;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      font-weight: bold;
-      margin: 4px;
-      cursor: grab;
-      user-select: none;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .tile:hover {
-      transform: translateY(-3px);
-      box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
-    }
-
-    .tile.dragging {
-      opacity: 0.7;
-      transform: scale(1.05);
-    }
-
-    .tile.valid {
-      border-color: #2e8b57;
-      box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.3);
-    }
-
-    .hand {
-      min-height: 120px;
-      background: #e8d9c5;
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 20px;
-      text-align: center;
-      border: 2px dashed #c9a88a;
-    }
-
-    .instructions {
-      font-style: italic;
-      color: #6b4c3a;
-      margin-top: 10px;
-    }
-
-    .all-tiles {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 20px;
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mahjong Learn — Корейский маджонг (навыки для новичков)</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Изучаем корейский маджонг 🀄</h1>
-    <p>Интерактивное пособие для новичков</p>
+  <header class="site-header">
+    <h1>Mahjong Learn — Корейский маджонг</h1>
+    <nav>
+      <a href="index.html">Главная</a> |
+      <a href="lessons.html">Уроки</a> |
+      <a href="trainer.html">Тренажёр</a>
+    </nav>
   </header>
 
-  <nav>
-    <a href="index.html">Главная</a>
-    <a href="lessons.html">Уроки</a>
-    <a href="trainer.html">Тренажёр</a>
-  </nav>
-
-  <main>
-    <section class="section">
-      <h2>Что такое корейский маджонг?</h2>
-      <p>
-        Корейский маджонг — это разновидность классической игры, популярная в Южной Корее.
-        Используются стандартные 144 тайла, но правила подсчёта очков и некоторые комбинации отличаются от японского или китайского вариантов.
+  <main class="container">
+    <section class="hero">
+      <h2>Курс для новичков</h2>
+      <p>Короткие уроки, интерактивный тренажёр и головоломки. Плитки берутся из открытого набора riichi-mahjong-tiles (public domain).</p>
+      <p class="actions">
+        <a class="btn" href="lessons.html">Перейти к урокам</a>
+        <a class="btn ghost" href="trainer.html">Открыть тренажёр</a>
       </p>
     </section>
 
-    <section class="section">
-      <h2>Все тайлы маджонга</h2>
-      <p>Нажми на любой тайл, чтобы узнать его название!</p>
-      <div class="all-tiles" id="all-tiles-container"></div>
+    <section class="preview">
+      <h3>Набор плиток (превью)</h3>
+      <div id="preview-tiles" class="tile-grid"></div>
+      <p class="note">Если плитки не показываются, скопируйте в <code>public/tiles/regular/</code> SVG из репозитория <em>FluffyStuff/riichi-mahjong-tiles</em>. См. README.</p>
+    </section>
+
+    <section class="about">
+      <h3>О курсе (корейская версия)</h3>
+      <ul>
+        <li>Фокус — базовые комбинации, распознавание плиток, простая тактика.</li>
+        <li>Корейский маджонг: в уроках будет указано, где правила отличаются от риичи/китайского.</li>
+        <li>Все уроки бесплатны и открыты.</li>
+      </ul>
     </section>
   </main>
 
-  <script src="main.js"></script>
-  <script>
-    // Показ всех 34 тайлов на главной
-    const container = document.getElementById('all-tiles-container');
-    const allTiles = [
-      '🀇','🀈','🀉','🀊','🀋','🀌','🀍','🀎','🀏',
-      '🀙','🀚','🀛','🀜','🀝','🀞','🀟','🀠','🀡',
-      '🀐','🀑','🀒','🀓','🀔','🀕','🀖','🀗','🀘',
-      '🀀','🀁','🀂','🀃','🀅','🀆','🀄'
-    ];
+  <footer class="site-footer">
+    <small>Иконки плиток — из <a href="https://github.com/FluffyStuff/riichi-mahjong-tiles">FluffyStuff/riichi-mahjong-tiles</a> (public domain). · Репозиторий: <a href="https://github.com/sakhbanana/mahjong-learn">sakhbanana/mahjong-learn</a>.</small>
+  </footer>
 
-    allTiles.forEach(tileChar => {
-      const tile = document.createElement('div');
-      tile.className = 'tile';
-      tile.textContent = tileChar;
-      tile.draggable = false; // только для просмотра
-      container.appendChild(tile);
-    });
-  </script>
+  <script src="main.js"></script>
+  <script>initPreview();</script>
 </body>
 </html>
