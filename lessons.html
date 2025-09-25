@@ -1,15 +1,29 @@
-<!-- lessons.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Уроки — Корейский маджонг</title>
+  <title>Урок 1 — Тайлы маджонга</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .lesson-tile {
+      width: 70px;
+      height: 98px;
+      margin: 8px;
+      cursor: pointer;
+    }
+    .highlight {
+      animation: highlight 1.5s ease-in-out;
+    }
+    @keyframes highlight {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); box-shadow: 0 0 0 4px rgba(255,102,0,0.6); }
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Уроки маджонга 🀄</h1>
+    <h1>Урок 1: Тайлы маджонга 🀄</h1>
     <nav>
       <a href="index.html">Главная</a>
       <a href="lessons.html">Уроки</a>
@@ -18,14 +32,61 @@
   </header>
 
   <main class="section">
-    <h2>Скоро здесь будут уроки!</h2>
-    <ul>
-      <li>Урок 1: Типы тайлов</li>
-      <li>Урок 2: Что такое пунг, чоу, конг</li>
-      <li>Урок 3: Правила корейского маджонга</li>
-      <li>Урок 4: Подсчёт очков</li>
-    </ul>
-    <p>А пока потренируйся в <a href="trainer.html">тренажёре</a>!</p>
+    <h2>Три числовые масти</h2>
+    <p>В маджонге есть три масти по 9 значений. Каждая масть имеет свой цвет:</p>
+
+    <h3>🟥 Ман (иероглифы)</h3>
+    <div class="all-tiles" id="man-tiles"></div>
+
+    <h3>🟦 Пин (кружки)</h3>
+    <div class="all-tiles" id="pin-tiles"></div>
+
+    <h3>🟩 Соу (бамбуки)</h3>
+    <div class="all-tiles" id="sou-tiles"></div>
+
+    <h2>Особые тайлы</h2>
+    <h3>Ветра</h3>
+    <div class="all-tiles" id="wind-tiles"></div>
+
+    <h3>Драконы</h3>
+    <div class="all-tiles" id="dragon-tiles"></div>
+
+    <p style="margin-top: 20px;"><em>Нажми на любой тайл, чтобы услышать его название!</em></p>
   </main>
+
+  <script src="main.js"></script>
+  <script>
+    const suits = {
+      man: ['🀐','🀑','🀒','🀓','🀔','🀕','🀖','🀗','🀘'],
+      pin: ['🀇','🀈','🀉','🀊','🀋','🀌','🀍','🀎','🀏'],
+      sou: ['🀙','🀚','🀛','🀜','🀝','🀞','🀟','🀠','🀡'],
+      wind: ['🀀','🀁','🀂','🀃'],
+      dragon: ['🀅','🀆','🀄']
+    };
+
+    function renderTiles(chars, containerId) {
+      const container = document.getElementById(containerId);
+      chars.forEach(char => {
+        const tile = document.createElement('div');
+        tile.className = 'tile lesson-tile';
+        tile.innerHTML = createTileSVG(char);
+        tile.dataset.char = char;
+        tile.addEventListener('click', () => {
+          tile.classList.add('highlight');
+          setTimeout(() => tile.classList.remove('highlight'), 1600);
+          const name = tileNames[char] || 'Тайл';
+          alert(`Это — ${name}`);
+          playSound('click');
+        });
+        container.appendChild(tile);
+      });
+    }
+
+    renderTiles(suits.man, 'man-tiles');
+    renderTiles(suits.pin, 'pin-tiles');
+    renderTiles(suits.sou, 'sou-tiles');
+    renderTiles(suits.wind, 'wind-tiles');
+    renderTiles(suits.dragon, 'dragon-tiles');
+  </script>
 </body>
 </html>
