@@ -1,11 +1,25 @@
-<!-- trainer.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Тренажёр — Корейский маджонг</title>
+  <title>Тренажёр — Уровни</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .level-indicator {
+      text-align: center;
+      font-size: 1.2em;
+      margin-bottom: 16px;
+      color: #8b0000;
+      font-weight: bold;
+    }
+    .goal {
+      background: #f0e6d2;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -17,52 +31,74 @@
     </nav>
   </header>
 
-  <main>
-    <section class="section">
-      <h2>Собери готовую руку!</h2>
-      <p>Перетащи 14 тайлов в руку. Цель: 4 комбинации (сет или ряд) + 1 пара.</p>
+  <main class="section">
+    <div class="level-indicator">Уровень <span id="level">1</span> из 3</div>
+    <div class="goal" id="goal-text">Цель: собери <strong>пару</strong> (2 одинаковых тайла)</div>
 
-      <div class="hand" id="player-hand">
-        <div class="instructions">Твоя рука</div>
-      </div>
+    <div class="hand" id="player-hand">
+      <div class="instructions">Перетащи сюда тайлы</div>
+    </div>
 
-      <div id="result"></div>
+    <div id="result"></div>
 
-      <h3>Колоды тайлов</h3>
-      <div id="tiles-bank"></div>
+    <h3>Колоды тайлов</h3>
+    <div id="tiles-bank"></div>
 
-      <button id="check-btn" style="margin-top: 16px; padding: 8px 16px; font-size: 16px;">Проверить руку</button>
-    </section>
+    <button id="check-btn" style="margin-top: 16px; padding: 10px 20px; font-size: 16px;">Проверить</button>
+    <button id="next-btn" style="display:none; margin-left: 10px; padding: 10px 20px; background:#2e8b57; color:white;">Следующий уровень →</button>
   </main>
 
   <script src="main.js"></script>
   <script>
-    const tileSymbols = [
+    const allTiles = [
+      '🀐','🀑','🀒','🀓','🀔','🀕','🀖','🀗','🀘',
       '🀇','🀈','🀉','🀊','🀋','🀌','🀍','🀎','🀏',
       '🀙','🀚','🀛','🀜','🀝','🀞','🀟','🀠','🀡',
-      '🀐','🀑','🀒','🀓','🀔','🀕','🀖','🀗','🀘',
-      '🀀','🀁','🀂','🀃','🀅','🀆'
+      '🀀','🀁','🀂','🀃','🀅','🀆','🀄'
     ];
+
+    let currentLevel = 1;
+    const levelGoals = {
+      1: 'пару',
+      2: 'сет (3 одинаковых)',
+      3: 'готовую руку (4 комбинации + пара)'
+    };
 
     const tilesBank = document.getElementById('tiles-bank');
     const playerHand = document.getElementById('player-hand');
     const resultDiv = document.getElementById('result');
     const checkBtn = document.getElementById('check-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const levelSpan = document.getElementById('level');
+    const goalText = document.getElementById('goal-text');
 
-    // Генерация тайлов
-    for (let i = 0; i < 30; i++) {
-      const tile = document.createElement('div');
-      tile.className = 'tile';
-      tile.textContent = tileSymbols[Math.floor(Math.random() * tileSymbols.length)];
-      tile.draggable = true;
+    function updateLevel() {
+      levelSpan.textContent = currentLevel;
+      goalText.innerHTML = `Цель: собери <strong>${levelGoals[currentLevel]}</strong>`;
+      playerHand.innerHTML = '<div class="instructions">Перетащи сюда тайлы</div>';
+      resultDiv.innerHTML = '';
+      nextBtn.style.display = 'none';
+      generateTiles();
+    }
 
-      tile.addEventListener('dragstart', e => {
-        e.dataTransfer.setData('text/plain', tile.textContent);
-        tile.classList.add('dragging');
-      });
+    function generateTiles() {
+      tilesBank.innerHTML = '';
+      // Генерируем 25 случайных тайлов
+      for (let i = 0; i < 25; i++) {
+        const char = allTiles[Math.floor(Math.random() * allTiles.length)];
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.innerHTML = createTileSVG(char);
+        tile.draggable = true;
+        tile.dataset.char = char;
 
-      tile.addEventListener('dragend', () => tile.classList.remove('dragging'));
-      tilesBank.appendChild(tile);
+        tile.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/plain', char);
+          tile.classList.add('dragging');
+        });
+        tile.addEventListener('dragend', () => tile.classList.remove('dragging'));
+        tilesBank.appendChild(tile);
+      }
     }
 
     playerHand.addEventListener('dragover', e => e.preventDefault());
@@ -71,37 +107,64 @@
       const char = e.dataTransfer.getData('text/plain');
       const newTile = document.createElement('div');
       newTile.className = 'tile';
-      newTile.textContent = char;
+      newTile.innerHTML = createTileSVG(char);
+      newTile.dataset.char = char;
       newTile.draggable = true;
       newTile.addEventListener('click', () => newTile.remove());
       if (playerHand.querySelector('.instructions')) playerHand.innerHTML = '';
       playerHand.appendChild(newTile);
     });
 
-    // Проверка руки
+    function checkLevel1(tiles) {
+      const counts = {};
+      tiles.forEach(t => counts[t] = (counts[t] || 0) + 1);
+      return Object.values(counts).some(count => count >= 2);
+    }
+
+    function checkLevel2(tiles) {
+      const counts = {};
+      tiles.forEach(t => counts[t] = (counts[t] || 0) + 1);
+      return Object.values(counts).some(count => count >= 3);
+    }
+
     checkBtn.addEventListener('click', () => {
-      const handTiles = Array.from(playerHand.querySelectorAll('.tile')).map(t => t.textContent);
-      
-      if (handTiles.length !== 14) {
-        resultDiv.innerHTML = '<p style="color: #c00;">В руке должно быть 14 тайлов!</p>';
-        return;
-      }
+      const handTiles = Array.from(playerHand.querySelectorAll('.tile')).map(t => t.dataset.char);
+      let success = false;
 
-      const result = checkHand(handTiles);
-      let msg = '';
-
-      if (result.isComplete) {
-        msg = '<p class="success">✅ Поздравляем! У вас готовая рука!</p>';
-        // playSound('success');
-      } else {
-        msg = `<p>Комбинации: ${result.pungs.length} сет(ов), ${result.chows.length} ряд(ов). Пар: ${result.pairs.length}.</p>`;
-        if (result.pungs.length + result.chows.length < 4 || result.pairs.length === 0) {
-          msg += '<p style="color:#c00;">Нужно 4 комбинации + 1 пара.</p>';
+      if (currentLevel === 1) {
+        success = checkLevel1(handTiles);
+      } else if (currentLevel === 2) {
+        success = checkLevel2(handTiles);
+      } else if (currentLevel === 3) {
+        if (handTiles.length !== 14) {
+          resultDiv.innerHTML = '<p style="color:#c00;">Нужно 14 тайлов!</p>';
+          return;
         }
+        const result = checkHand(handTiles);
+        success = result.isComplete;
       }
 
-      resultDiv.innerHTML = msg;
+      if (success) {
+        resultDiv.innerHTML = '<p class="success">✅ Отлично! Цель выполнена!</p>';
+        playSound('success');
+        nextBtn.style.display = 'inline-block';
+      } else {
+        resultDiv.innerHTML = `<p style="color:#c00;">❌ Пока не получилось. Попробуй ещё!</p>`;
+      }
     });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentLevel < 3) {
+        currentLevel++;
+        updateLevel();
+      } else {
+        resultDiv.innerHTML = '<p class="success">🏆 Поздравляем! Ты прошёл все уровни!</p>';
+        nextBtn.style.display = 'none';
+      }
+    });
+
+    // Старт
+    updateLevel();
   </script>
 </body>
 </html>
