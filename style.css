@@ -1,0 +1,126 @@
+/* style.css */
+:root {
+  --tile-size: 60px;
+  --tile-height: 84px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f4e8;
+  margin: 0;
+  padding: 16px;
+  color: #2c1810;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+nav {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+nav a {
+  margin: 0 12px;
+  text-decoration: none;
+  color: #8b4513;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+nav a:hover {
+  background: #e8d9c5;
+}
+
+.section {
+  max-width: 900px;
+  margin: 0 auto 32px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+h1, h2, h3 {
+  color: #8b0000;
+}
+
+/* Тайл */
+.tile {
+  width: var(--tile-size);
+  height: var(--tile-height);
+  background: white;
+  border: 2px solid #d4b895;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 4px;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+}
+
+.tile.dragging {
+  opacity: 0.7;
+  transform: scale(1.05);
+}
+
+.tile.valid {
+  border-color: #2e8b57;
+  box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.3);
+}
+
+.tile.pung, .tile.chow {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(46, 139, 87, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(46, 139, 87, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(46, 139, 87, 0); }
+}
+
+.hand {
+  min-height: 120px;
+  background: #e8d9c5;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 20px;
+  text-align: center;
+  border: 2px dashed #c9a88a;
+}
+
+.instructions {
+  font-style: italic;
+  color: #6b4c3a;
+  margin-top: 10px;
+}
+
+.success {
+  color: #2e8b57;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-top: 16px;
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
