@@ -1,5 +1,5 @@
 // main.js — простая учебная логика
-// Ожидает папку public/tiles/regular/... со svg-тайлами.
+// Ожидает папку tiles/regular/... со svg-тайлами.
 // Если названия у вашего набора другие, поправьте TILE_LIST.
 
 const TILE_LIST = [
@@ -13,7 +13,7 @@ const TILE_LIST = [
   'flower1.svg','flower2.svg','season1.svg' // если есть
 ];
 
-const TILE_BASE = 'public/tiles/regular/'; // путь; если вы использовали submodule: public/tiles/riichi-tiles/Regular/
+const TILE_BASE = 'tiles/regular/'; // путь; если вы использовали submodule: public/tiles/riichi-tiles/Regular/
 const TILE_BASE_ALT = 'public/tiles/riichi-tiles/Regular/'; // возможный путь если submodule
 
 function tilePath(name){
