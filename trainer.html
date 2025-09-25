@@ -1,0 +1,107 @@
+<!-- trainer.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Тренажёр — Корейский маджонг</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Тренажёр маджонга 🀄</h1>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="lessons.html">Уроки</a>
+      <a href="trainer.html">Тренажёр</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section">
+      <h2>Собери готовую руку!</h2>
+      <p>Перетащи 14 тайлов в руку. Цель: 4 комбинации (сет или ряд) + 1 пара.</p>
+
+      <div class="hand" id="player-hand">
+        <div class="instructions">Твоя рука</div>
+      </div>
+
+      <div id="result"></div>
+
+      <h3>Колоды тайлов</h3>
+      <div id="tiles-bank"></div>
+
+      <button id="check-btn" style="margin-top: 16px; padding: 8px 16px; font-size: 16px;">Проверить руку</button>
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+  <script>
+    const tileSymbols = [
+      '🀇','🀈','🀉','🀊','🀋','🀌','🀍','🀎','🀏',
+      '🀙','🀚','🀛','🀜','🀝','🀞','🀟','🀠','🀡',
+      '🀐','🀑','🀒','🀓','🀔','🀕','🀖','🀗','🀘',
+      '🀀','🀁','🀂','🀃','🀅','🀆'
+    ];
+
+    const tilesBank = document.getElementById('tiles-bank');
+    const playerHand = document.getElementById('player-hand');
+    const resultDiv = document.getElementById('result');
+    const checkBtn = document.getElementById('check-btn');
+
+    // Генерация тайлов
+    for (let i = 0; i < 30; i++) {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.textContent = tileSymbols[Math.floor(Math.random() * tileSymbols.length)];
+      tile.draggable = true;
+
+      tile.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', tile.textContent);
+        tile.classList.add('dragging');
+      });
+
+      tile.addEventListener('dragend', () => tile.classList.remove('dragging'));
+      tilesBank.appendChild(tile);
+    }
+
+    playerHand.addEventListener('dragover', e => e.preventDefault());
+    playerHand.addEventListener('drop', e => {
+      e.preventDefault();
+      const char = e.dataTransfer.getData('text/plain');
+      const newTile = document.createElement('div');
+      newTile.className = 'tile';
+      newTile.textContent = char;
+      newTile.draggable = true;
+      newTile.addEventListener('click', () => newTile.remove());
+      if (playerHand.querySelector('.instructions')) playerHand.innerHTML = '';
+      playerHand.appendChild(newTile);
+    });
+
+    // Проверка руки
+    checkBtn.addEventListener('click', () => {
+      const handTiles = Array.from(playerHand.querySelectorAll('.tile')).map(t => t.textContent);
+      
+      if (handTiles.length !== 14) {
+        resultDiv.innerHTML = '<p style="color: #c00;">В руке должно быть 14 тайлов!</p>';
+        return;
+      }
+
+      const result = checkHand(handTiles);
+      let msg = '';
+
+      if (result.isComplete) {
+        msg = '<p class="success">✅ Поздравляем! У вас готовая рука!</p>';
+        // playSound('success');
+      } else {
+        msg = `<p>Комбинации: ${result.pungs.length} сет(ов), ${result.chows.length} ряд(ов). Пар: ${result.pairs.length}.</p>`;
+        if (result.pungs.length + result.chows.length < 4 || result.pairs.length === 0) {
+          msg += '<p style="color:#c00;">Нужно 4 комбинации + 1 пара.</p>';
+        }
+      }
+
+      resultDiv.innerHTML = msg;
+    });
+  </script>
+</body>
+</html>
