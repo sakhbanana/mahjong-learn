@@ -4,13 +4,13 @@
 
 const TILE_LIST = [
   // масти — m = characters (man), p = circles (pin), s = bamboo (sou)
-  'm1.svg','m2.svg','m3.svg','m4.svg','m5.svg','m6.svg','m7.svg','m8.svg','m9.svg',
-  'p1.svg','p2.svg','p3.svg','p4.svg','p5.svg','p6.svg','p7.svg','p8.svg','p9.svg',
-  's1.svg','s2.svg','s3.svg','s4.svg','s5.svg','s6.svg','s7.svg','s8.svg','s9.svg',
+  'Man1.svg','Man2.svg','Man3.svg','Man4.svg','Man5.svg','Man6.svg','Man7.svg','Man8.svg','Man9.svg',
+  'Pin1.svg','Pin2.svg','Pin3.svg','Pin4.svg','Pin5.svg','Pin6.svg','Pin7.svg','Pin8.svg','Pin9.svg',
+  'Sou1.svg','Sou2.svg','Sou3.svg','Sou4.svg','Sou5.svg','Sou6.svg','Sou7.svg','Sou8.svg','Sou9.svg',
   // ветра и драконы (часто называются east/west/south/north/white/green/red)
-  'east.svg','south.svg','west.svg','north.svg','white.svg','green.svg','red.svg',
+  'Chun.svg','Haku.svg','Hatsu.svg','Nan.svg','Pei.svg','Shaa.svg','Ton.svg'
   // цветочные/сезонные необязательные: flower1..4, season1..4
-  'flower1.svg','flower2.svg','season1.svg' // если есть
+  // если есть
 ];
 
 const TILE_BASE = 'tiles/regular/'; // путь; если вы использовали submodule: public/tiles/riichi-tiles/Regular/
